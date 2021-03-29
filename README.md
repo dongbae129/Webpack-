@@ -90,10 +90,13 @@ png, jpg 파일에 대해서는 file-loader를 적용시키며 생성위치는 .
   
     plugins: [new CleanWebpackPlugin()],
   }
+  
+
 
 3. 자주사용하는 loader, plugins
 
-  3.1
+
+3.1
     
       css-loader : css파일을 js파일에서 불러와 사용하기 위하여 필요하다.(css사용하기 위하여)
   
@@ -105,8 +108,7 @@ png, jpg 파일에 대해서는 file-loader를 적용시키며 생성위치는 .
       
       통하여 문자열 형태로 javascript 코드에 삽입한다.
       
-      
-  3.2
+3.2
   
       BannerPlugin : bundle 파일에 banner를 등록할수 있다.(주로 commit 버전, author, build정보를 등록한다.)
   
