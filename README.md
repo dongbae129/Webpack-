@@ -1,11 +1,9 @@
 -목차-
 1. webpack 소개
-  1.1 정의
-  1.2 사용이유
-  1.3 webpack.config.js
+
 
 2. webpack.config.js(설정파일) 구성요소
-  2.1 mode, entry, output, loader, plugin
+
 
 3. 자주 사용하는 loader, plugin
 
