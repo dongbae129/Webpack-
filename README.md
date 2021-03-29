@@ -30,23 +30,18 @@
 
 2. webpack 설정파일(webpack.config.js)
 
-  const path = require("path")
+const path = require("path")
 
-  module.exports = {
-    mode: "development",
-    entry: {
-      main: "./src/app.js",
-    },
-    output: {
-      filename: "[name].js",
-      path: path.resolve("./dist"),
-    },
-    module: {},
-    plugins: []
-   
-  }
-
-webpack 설정파일에서 알아야할것은 mode, entry, output, module, plugins 총 4개이다.
+module.exports = {
+  mode: "development",
+  entry: {
+    main: "./src/app.js",
+  },
+  output: {
+    filename: "[name].js",
+    path: path.resolve("./dist"),
+  },
+}
 
 
 
