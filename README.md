@@ -41,12 +41,9 @@
       filename: "[name].js",
       path: path.resolve("./dist"),
     },
-    module: {
-    
-    },
-    plugins: [
-    
-    ],
+    module: {},
+    plugins: []
+   
   }
 
 webpack 설정파일에서 알아야할것은 mode, entry, output, module, plugins 총 4개이다.
