@@ -7,7 +7,7 @@
 
 3. 자주 사용하는 loader, plugin
 
-4. polyfill
+4. Babel
 
 
 1.1 webpack이란? 
@@ -124,7 +124,112 @@ png, jpg 파일에 대해서는 file-loader를 적용시키며 생성위치는 .
       
       
 
+4. Babel
 
+ 4.1 babel이란?
+ 
+ babel은 javascript 컴파일러 이다. 말 그대로 소스 대 소스 컴파일러로서 결과물을 javascript로 바꿔준다. 그렇다면 왜 babel을 쓰는걸까?
+ 
+ javascript코드를 현재 및 과거의 브라우저 환경에서 호환되는 버전으로 변경시키기 위하여 사용된다.
+ 
+ babel은 파싱, 변환, 출력 3단계로 이루어지며 파싱(를 하나의 토큰으로 분리시켜), 변환(브라우저 환경에 맞게 코드를 변환), 출력(변환된 코드로 출력) 한다.
+ 
+ babel은 파싱, 출력만 담당하며 plugin이 변환을 담당한다.
+ 
+ webpackp에서 설명했듯이 babel도 동일하게 babel.config.js 처럼 설정파일을 사용한다.
+ 
+ module.exports =  {
+ 
+  plugins: [
+  
+    "@babel/plugin-transform-block-scoping",
+    "@babel/plugin-transform-arrow-functions",
+    "@babel/plugin-transform-strict-mode",
+  ],
+}
+ 
+plugins 배열안에 사용할 plugin을 넣으면 된다. 하지만 일일이 플러그인을 설정하는 행위는 매우 귀찮으므로 이런것들을 세트로 모아놓은 preset이 존재한다.
+
+module.exports = {
+
+  presets: [
+  
+    [
+	
+      "@babel/preset-env",
+	  
+      {
+        targets: {
+          chrome: "79",
+          ie: "11", 
+        },
+      },
+    ],
+  ],
+}
+
+"@babel/preset-env"는 기본적으로 필요한 plugins을 모아놓은 세트이다. presets배열 안에 자신이 사용할 preset을 넣고 위 코드와 같이 설정을 추가하고 싶다면 사용할 preset을
+
+배열로 변경하고 객체로 설정을 넣으면된다. 위와같이 ie11, chrome79까지 돌아가게 하려면 target객체를 만들어 넣으면 된다.
+
+
+4.2 폴리필(polyfill)
+
+폴리필은 최신 ECMAScript 환경을 만들기 위해 코드가 실행되는 환경에 존재하지 않는 빌트인, 메소드 등을 추가하는 역할을 한다.
+예를들어 Promise는 일반적으로 babel을 돌려도 코드를 변환시키지 않는다. 빌트인, 메소드에 존재하지 않기 때문이다.
+하지만 대체할수 없을뿐이지 구현할수는 있다.
+
+module.exports = {
+
+  presets: [
+  
+    [
+      "@babel/preset-env",
+      {
+        useBuiltIns: "usage", // 폴리필 사용 방식 지정
+        corejs: {
+          // 폴리필 버전 지정
+          version: 2,
+        },
+      },
+    ],
+  ],
+}
+		
+useBuiltIns는 "usage" , "entry", false 세가지를 사용할수 있으며 default는 false이기 때문에 기본적으로 폴리필이 작동하지 않았던 것이다.
+usage나 entry를 설정하면 폴리필 패키지 중 core-js를 모듈로 가져와 Promise를 다른 브라우저에서 동작할수 있도록 적절하게 구현시켜준다.
+
+위 설정파일로 컴파일 할시 
+
+require("core-js/modules/es6.promise");
+require("core-js/modules/es6.object.to-string");
+에러가 발생하며 이는 Promise를 구현하기 위하여 2가지를 require했다는 뜻이다. 그러나 우리는 위의 두가지를 아직 설치하지 않았기 때문에 에러가 뜨는것 뿐이다.
+그러므로 npm으로 설치만 해주면 된다. npm i core-js@2
+
+마지막으로 babel을 이렇게 일일이 실행시키지 않는다.
+간단하게 webpack에서 loader로서 js파일에 대해 babel-loader를 적용시켜주면 된다.
+
+
+//webpack.config.js
+
+module.exports = {
+
+  module: {
+  
+    rules: [
+	
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "babel-loader",
+      },
+    ],
+  },
+}
+		
+exclude는 말그대로 제외할 목록인데 모든파일에 대해 해당 loader를 적용시지 말고 node_modules밑에 있는 파일들은 제외하고 적용시킨다.
+
+		
 
 
 
