@@ -33,7 +33,7 @@
 
 2. webpack 설정파일(webpack.config.js)
 
-
+````
 const path = require("path");
 
 module.exports = {
@@ -53,6 +53,7 @@ module.exports = {
   module: {},  
   plugins: [],  
 }
+````
 
 webpack.config.js에서 알아야할 4가지는 mode, entry, output, module, plugins 이다.
 
@@ -64,7 +65,7 @@ webpack.config.js에서 알아야할 4가지는 mode, entry, output, module, plu
 
 2.4 module : module들의 규칙을 결정한다. 여기서 js파일의 규칙, css파일의 규칙, 이미지파일의 규칙 등등을 결정할수 있다.
 
-
+````
     module: {
      rules: [
        {
@@ -80,13 +81,14 @@ webpack.config.js에서 알아야할 4가지는 mode, entry, output, module, plu
         },
      ],
   },
-  
+````
+
 css파일에 대해서는 css-loader, style-loader를 순으로 적용을 시키며,
 png, jpg 파일에 대해서는 file-loader를 적용시키며 생성위치는 ./dist/ 생성이름은 파일이름.확장자 이다.
 
 2.5 plugins : loader와 다르게 bundle파일에 대해 처리하며 class 형태이기 때문에 new연산자를 이용하여 생성한다.
 
-
+````
   const { CleanWebpackPlugin } = require("clean-webpack-plugin"); 
   
   
@@ -94,7 +96,7 @@ png, jpg 파일에 대해서는 file-loader를 적용시키며 생성위치는 .
   
     plugins: [new CleanWebpackPlugin()],
   }
-  
+````
 
 
 3. 자주사용하는 loader, plugins
@@ -138,6 +140,7 @@ png, jpg 파일에 대해서는 file-loader를 적용시키며 생성위치는 .
  
  webpackp에서 설명했듯이 babel도 동일하게 babel.config.js 처럼 설정파일을 사용한다.
  
+````
  module.exports =  {
  
   plugins: [
@@ -147,9 +150,11 @@ png, jpg 파일에 대해서는 file-loader를 적용시키며 생성위치는 .
     "@babel/plugin-transform-strict-mode",
   ],
 }
+````
  
 plugins 배열안에 사용할 plugin을 넣으면 된다. 하지만 일일이 플러그인을 설정하는 행위는 매우 귀찮으므로 이런것들을 세트로 모아놓은 preset이 존재한다.
 
+````
 module.exports = {
 
   presets: [
@@ -167,6 +172,7 @@ module.exports = {
     ],
   ],
 }
+````
 
 "@babel/preset-env"는 기본적으로 필요한 plugins을 모아놓은 세트이다. presets배열 안에 자신이 사용할 preset을 넣고 위 코드와 같이 설정을 추가하고 싶다면 사용할 preset을
 
@@ -179,6 +185,7 @@ module.exports = {
 예를들어 Promise는 일반적으로 babel을 돌려도 코드를 변환시키지 않는다. 빌트인, 메소드에 존재하지 않기 때문이다.
 하지만 대체할수 없을뿐이지 구현할수는 있다.
 
+````
 module.exports = {
 
   presets: [
@@ -195,21 +202,25 @@ module.exports = {
     ],
   ],
 }
+````
 		
 useBuiltIns는 "usage" , "entry", false 세가지를 사용할수 있으며 default는 false이기 때문에 기본적으로 폴리필이 작동하지 않았던 것이다.
 usage나 entry를 설정하면 폴리필 패키지 중 core-js를 모듈로 가져와 Promise를 다른 브라우저에서 동작할수 있도록 적절하게 구현시켜준다.
 
 위 설정파일로 컴파일 할시 
 
+````
 require("core-js/modules/es6.promise");
 require("core-js/modules/es6.object.to-string");
+````
+
 에러가 발생하며 이는 Promise를 구현하기 위하여 2가지를 require했다는 뜻이다. 그러나 우리는 위의 두가지를 아직 설치하지 않았기 때문에 에러가 뜨는것 뿐이다.
 그러므로 npm으로 설치만 해주면 된다. npm i core-js@2
 
 마지막으로 babel을 이렇게 일일이 실행시키지 않는다.
 간단하게 webpack에서 loader로서 js파일에 대해 babel-loader를 적용시켜주면 된다.
 
-
+````
 //webpack.config.js
 
 module.exports = {
@@ -226,7 +237,9 @@ module.exports = {
     ],
   },
 }
-		
+	
+````
+
 exclude는 말그대로 제외할 목록인데 모든파일에 대해 해당 loader를 적용시지 말고 node_modules밑에 있는 파일들은 제외하고 적용시킨다.
 
 		
